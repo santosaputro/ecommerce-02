@@ -1,0 +1,21 @@
+.main-content {
+  // margin-top: 10rem;
+}
+
+.sticky-card-container {
+  background: $white;
+  display: flex;
+  overflow-x: scroll;
+  padding: 0.5rem 0;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+
+  .btn {
+    margin-left: 0.6rem;
+    cursor: pointer;
+  }
+
+  .btn:first-child {
+    margin-left: 0;
+  }
+}

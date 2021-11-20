@@ -1,0 +1,200 @@
+.item-detail-main {
+  background: $primary-color;
+  height: 100vh;
+}
+
+.item-bottom-nav {
+  background: $white;
+  position: fixed;
+  width: 100%;
+  padding: 1rem;
+  bottom: 0;
+
+  .nav-btn {
+    @extend .btn;
+    @extend .btn-sm;
+    margin-left: 1.5rem;
+    border-radius: 1.5rem;
+
+    &:nth-child(1) {
+      margin-left: 0;
+    }
+
+    &.buy-now {
+      @extend .px-5;
+      background: $primary-color;
+      color: $white;
+    }
+
+    &.cart {
+      @extend .px-3;
+      border: 1px solid $primary-color;
+      color: $primary-color;
+    }
+  }
+}
+
+.item-container {
+  position: relative;
+  background: $primary-color;
+
+  .item-image {
+    filter: contrast(0.4);
+    @extend .pt-3;
+    @extend .pb-5;
+    @extend .px-5;
+  }
+
+  .item-title {
+    font-size: 24px;
+    font-weight: 900;
+    color: $white;
+  }
+
+  .item-caption {
+    color: #ffe9e2;
+    font-size: 14px;
+    display: flex;
+    @extend .py-2;
+    @extend .justify-content-between;
+
+    .caption-stars {
+      color: $white;
+      align-self: center;
+    }
+  }
+
+  .item-variant {
+    color: #ffe9e2;
+    display: flex;
+    justify-content: flex-start;
+    padding-top: 1rem;
+
+    &::before {
+      position: absolute;
+      left: 0;
+      padding-left: 0.75rem;
+      content: 'Variant';
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .variant-box {
+      border: 1px solid #ffe9e2;
+      color: #ffe9e2;
+      border-radius: 0.25rem;
+      padding: 1rem 1.5rem;
+      margin-top: 2rem;
+      margin-left: 2rem;
+      cursor: pointer;
+      transition: ease-out 0.2s;
+
+      &:hover,
+      &.active {
+        background: #ffe9e2;
+        color: $primary-color;
+        border: 1px solid #ffe9e2;
+      }
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      .title {
+        font-size: 12px;
+      }
+
+      .caption {
+        font-size: 16px;
+        font-weight: 900;
+      }
+    }
+  }
+}
+
+.bottom-fix-card {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding-top: 1.5rem;
+  border-radius: 1.5rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  background: $white;
+  z-index: 8;
+  transform: translateY(45rem);
+  transition: ease-in-out 0.5s;
+
+  &.toggle {
+    transform: translateY(0);
+  }
+
+  .fix-card-title {
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .qty-fixed {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    background: $white;
+    padding: 1.5rem 1rem;
+    z-index: 2;
+
+    .qty-card {
+      input {
+        width: 70px;
+      }
+    }
+
+    .price {
+      font-size: 26px;
+      font-weight: 500;
+    }
+  }
+
+  .action-card {
+    position: relative;
+    background: $white;
+    border-bottom-left-radius: 1.5rem;
+    border-bottom-right-radius: 1.5rem;
+    padding: 0rem 1rem 2rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    svg {
+      color: palevioletred;
+    }
+
+    .add-btn {
+      background: $primary-color;
+      border-radius: 1rem;
+      padding: 0.5rem 5rem;
+      color: $white;
+    }
+  }
+
+  .cart-fixed {
+    background: $black;
+    color: $white;
+    z-index: 1;
+    width: 100%;
+    height: 100px;
+    margin-top: -20px;
+    margin-bottom: -1px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 1.3rem 1rem;
+    font-size: 24px;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: -20px;
+  }
+}

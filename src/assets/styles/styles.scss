@@ -1,0 +1,17 @@
+@import '~bootstrap/scss/bootstrap';
+@import './variables';
+@import './mixin';
+
+@import './layouts/content';
+
+@import './UI/nav-dropdwon';
+@import './UI//navbar';
+@import './UI/card';
+@import './UI/item-detail';
+@import './UI/cart';
+@import './UI/navigator';
+@import './UI/button';
+@import './UI/checkbox';
+@import './UI/inputs';
+@import './layouts/backgrounds';
+@import './layouts/borders';

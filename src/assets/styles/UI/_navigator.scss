@@ -1,0 +1,12 @@
+.navigator {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  color: $white;
+  z-index: 99;
+
+  &.black {
+    color: $black !important;
+  }
+}

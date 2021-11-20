@@ -1,0 +1,19 @@
+.form-check-input {
+  border-color: $black !important;
+
+  &:checked,
+  &:checked:focus {
+    background-color: $primary-color !important;
+    border-color: $primary-color !important;
+    outline: none;
+  }
+
+  &:focus {
+    border-color: $black !important;
+    @include shadow(rgba(0, 0, 0, 0) 0 0 0 0);
+  }
+
+  &:focus-visible {
+    outline-offset: 0 !important;
+  }
+}

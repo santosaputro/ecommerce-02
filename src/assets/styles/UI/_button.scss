@@ -1,0 +1,33 @@
+.btn-primary {
+  background: $primary-color !important;
+  border-color: $primary-color !important;
+  outline: none !important;
+  color: $white !important;
+  box-shadow: none !important;
+
+  &:active,
+  &:focus,
+  &:hover {
+    background: $primary-color-strong !important;
+    border-color: $primary-color-strong !important;
+    outline: none !important;
+    color: $white !important;
+    box-shadow: none !important;
+  }
+}
+
+.btn-outline-primary {
+  border-color: $primary-color !important;
+  color: $primary-color !important;
+  outline: none !important;
+
+  &:active,
+  &:focus,
+  &:hover {
+    background-color: $primary-color-strong !important;
+    border-color: $primary-color-strong !important;
+    color: $white !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}

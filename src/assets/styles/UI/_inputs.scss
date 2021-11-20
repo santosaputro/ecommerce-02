@@ -1,0 +1,15 @@
+.form-control {
+  border-color: $primary-color-light !important;
+  outline: none !important;
+
+  &:active,
+  &:focus {
+    border-color: $primary-color-strong !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  &::placeholder {
+    color: $primary-color-light;
+  }
+}

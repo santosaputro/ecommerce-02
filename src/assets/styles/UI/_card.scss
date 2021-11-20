@@ -1,0 +1,36 @@
+.item-column {
+  column-width: 144px;
+  grid-column-gap: 7px;
+  column-gap: 7px;
+  width: 100%;
+}
+
+.item-card {
+  padding: 0.5rem 0.5rem 2rem 0.5rem;
+  cursor: pointer;
+  color: $black;
+  border-radius: 0.25rem;
+  margin: 0 2px 12px;
+  padding-bottom: 10px;
+  transition: opacity 0.4s ease-in-out;
+  display: inline-block;
+  -webkit-column-break-inside: avoid;
+  @include shadow(rgba(0, 0, 0, 0.2) 1px 1px 6px 1px);
+
+  .item-image {
+    background: lightgray;
+    border-radius: 0.25rem;
+  }
+
+  .item-content {
+    .content-title {
+      padding-top: 0.2rem;
+    }
+
+    .content-price {
+      padding-top: 1rem;
+      font-size: 18px;
+      font-weight: 600;
+    }
+  }
+}
