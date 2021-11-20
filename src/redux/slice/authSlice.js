@@ -7,7 +7,7 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     saveUser: (state, action) => {
-      state.value = action.payload;
+      state.userInfo = action.payload;
     },
   },
 });

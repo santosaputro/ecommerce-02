@@ -12,22 +12,32 @@ import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { saveUser } from './redux/slice/authSlice';
+import UserApi from './api/users/services';
 
 import ProtectedRoute from './utils/ProtectedRoutes';
 
 function App() {
   initializeApp(firebaseConfig);
   const auth = getAuth();
-  const user = useSelector(state => state.auth.value);
+  const user = useSelector(state => state.auth.userInfo);
   const dispatch = useDispatch();
 
   useEffect(() => {
     onAuthStateChanged(auth, user => {
       if (user) {
-        dispatch(saveUser(user.refreshToken));
-      } else {
-        dispatch(saveUser(undefined));
+        try {
+          UserApi.get({ uid: user.uid }).then(({ status, data }) => {
+            if (status === 200)
+              return dispatch(
+                saveUser({ ...data, refreshToken: user.refreshToken })
+              );
+            return dispatch(saveUser(undefined));
+          });
+        } catch (error) {
+          return dispatch(saveUser(undefined));
+        }
       }
+      return dispatch(saveUser(undefined));
     });
   }, [auth, dispatch]);
 
@@ -39,42 +49,43 @@ function App() {
             <Link to="/">Home</Link>
           </li>
           {!user ? (
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
+            <>
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+              <li>
+                <Link to="/register">Register</Link>
+              </li>{' '}
+            </>
           ) : (
             ''
           )}
-          <li>
-            <Link to="/register">Register</Link>
-          </li>
-          <li>
-            <Link to="/reset">Reset password</Link>
-          </li>
+
           {user ? (
-            <li>
-              <Link to="/protected">Protected page</Link>
-            </li>
-          ) : (
-            ''
-          )}
-          {user ? (
-            <li>
-              <Link
-                to="#"
-                onClick={() => {
-                  signOut(auth)
-                    .then(res => {
-                      console.log('user signed out', res);
-                    })
-                    .catch(error => {
-                      console.log('error', error);
-                    });
-                }}
-              >
-                Log out
-              </Link>
-            </li>
+            <>
+              <li>
+                <Link to="/protected">Protected page</Link>
+              </li>
+              <li>
+                <Link to="/reset">Reset password</Link>
+              </li>
+              <li>
+                <Link
+                  to="#"
+                  onClick={() => {
+                    signOut(auth)
+                      .then(res => {
+                        console.log('user signed out', res);
+                      })
+                      .catch(error => {
+                        console.log('error', error);
+                      });
+                  }}
+                >
+                  Log out
+                </Link>
+              </li>
+            </>
           ) : (
             ''
           )}
@@ -82,21 +93,11 @@ function App() {
       </nav>
 
       <Switch>
-        <Route exact path="/register">
-          <Register />
-        </Route>
-        <Route exact path="/login">
-          <Login />
-        </Route>
-        <Route exact path="/reset">
-          <Reset />
-        </Route>
-
+        <Route exact path="/" component={Home} />
+        <Route exact path="/register" component={Register} />
+        <Route exact path="/login" component={Login} />
         <ProtectedRoute exact path="/protected" component={Secret} />
-
-        <Route exact path="/">
-          <Home />
-        </Route>
+        <ProtectedRoute exact path="/reset" component={Reset} />
       </Switch>
     </Router>
   );

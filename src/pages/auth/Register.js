@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
+import { Redirect } from 'react-router';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import UserApi from '../../api/users/services';
+import { useSelector } from 'react-redux';
 
 const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const auth = getAuth();
+  const user = useSelector(state => state.auth.userInfo);
 
   const saveUser = async body => {
     const res = await UserApi.add({ body });
-    console.log(res);
     if (res.status === 200) window.location.href = '/';
   };
 
@@ -19,7 +21,6 @@ const Register = () => {
         const { user } = userCredential;
         saveUser({
           credential: {
-            accessToken: user.accessToken,
             providerId: user.providerId,
             signInMethod: 'email',
           },
@@ -41,7 +42,9 @@ const Register = () => {
       });
   };
 
-  return (
+  return user ? (
+    <Redirect to="/" />
+  ) : (
     <div>
       <h1>Register</h1>
       Email:

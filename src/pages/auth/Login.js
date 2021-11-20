@@ -8,13 +8,12 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const auth = getAuth();
 
-  const user = useSelector(state => state.auth.value);
+  const user = useSelector(state => state.auth.userInfo);
 
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
         const { user } = userCredential;
-        console.log('Sign in user: ', user);
       })
       .catch(error => {
         const { code, message } = error;
