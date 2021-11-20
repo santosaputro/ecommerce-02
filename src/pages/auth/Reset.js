@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import React, { useState } from 'react';
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 
 const Reset = () => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const auth = getAuth();
 
   const handleReset = () => {
     sendPasswordResetEmail(auth, email)
-      .then((res) => {
-        console.log("success", res);
+      .then(res => {
+        console.log('success', res);
       })
-      .catch((error) => {
+      .catch(error => {
         const { code, message } = error;
-        console.log("An error has occured: ", code, message);
+        console.log('An error has occured: ', code, message);
       });
   };
   return (
@@ -23,7 +23,7 @@ const Reset = () => {
       <input
         type="text"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={e => setEmail(e.target.value)}
       />
       <br />
       <button onClick={handleReset}>Reset password</button>
