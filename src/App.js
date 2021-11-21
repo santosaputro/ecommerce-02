@@ -1,25 +1,28 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Reset from './pages/auth/Reset';
 import Home from './pages/Home';
 import Secret from './pages/protected/Secret';
+import ProtectedRoute from './utils/ProtectedRoutes';
 
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './configs/firebaseConfig';
 import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
-
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { saveUser } from './redux/slice/authSlice';
 import UserApi from './api/users/services';
 
-import ProtectedRoute from './utils/ProtectedRoutes';
+import './assets/styles/styles.scss';
 
 function App() {
   initializeApp(firebaseConfig);
   const auth = getAuth();
-  const user = useSelector(state => state.auth.userInfo);
+  // const user = useSelector(state => state.auth.userInfo);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -41,7 +44,7 @@ function App() {
 
   return (
     <Router>
-      <nav>
+      {/* <nav>
         <ul>
           <li>
             <Link to="/">Home</Link>
@@ -87,7 +90,20 @@ function App() {
             ''
           )}
         </ul>
-      </nav>
+      </nav> */}
+
+      {/* <button
+        onClick={() =>
+          signOut(auth)
+            .then(res => {
+              console.log('user signed out', res);
+            })
+            .catch(error => {
+              console.log('error', error);
+            })
+        }>
+        sign out
+      </button> */}
 
       <Switch>
         <Route exact path="/" component={Home} />

@@ -1,21 +1,69 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import UserApi from '../../api/users/services';
+import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import UserApi from '../../api/users/services';
+
+import { Container, Form, Button, Image } from 'react-bootstrap';
+import TopNavigator from '../../components/top-navigator';
+
 const Register = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const auth = getAuth();
   const user = useSelector(state => state.auth.userInfo);
+  const history = useHistory();
+
+  const [form, setForm] = useState({});
+  const [errors, setErrors] = useState({});
+
+  const setField = (field, value) => {
+    setForm({ ...form, [field]: value });
+    if (!!errors[field]) setErrors({ ...errors, [field]: null });
+  };
+
+  const validateEmail = email => {
+    const re =
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  };
+
+  const findFormErrors = () => {
+    const { email, password, rePassword } = form;
+    const newErrors = {};
+    // email errors
+    if (!email || email === '') newErrors.email = 'Cannot be blank!';
+    else if (!validateEmail(email)) newErrors.email = 'Invalid email';
+    // password errors
+    if (!password || password === '') newErrors.password = 'Cannot be blank!';
+    // rePassword errors
+    if (!rePassword || rePassword === '') newErrors.rePassword = 'Cannot be blank!';
+    else if (rePassword !== password) newErrors.rePassword = "Password doesn't match";
+
+    return newErrors;
+  };
+
+  const formValidation = () => {
+    const newErrors = findFormErrors();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return false;
+    }
+    return true;
+  };
 
   const saveUser = async body => {
     const res = await UserApi.add({ body });
-    if (res.status === 200) window.location.href = '/';
+    if (res.status === 200) history.replace('/');
   };
 
-  const handleRegister = () => {
+  const handleRegister = async event => {
+    event.preventDefault();
+    const isValid = formValidation();
+
+    if (!isValid) return;
+    const { email, password } = form;
+
     createUserWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
         const { user } = userCredential;
@@ -32,38 +80,74 @@ const Register = () => {
           providerId: user.providerId,
           uid: user.uid,
         });
-
-        setEmail('');
-        setPassword('');
       })
       .catch(error => {
-        const { code, message } = error;
-        console.log('An error has occured: ', code, message);
+        const { message: msg } = error;
+        if (msg.search('weak-password') > 0) {
+          const stringMsg = msg.split(': ')[1].split(' (')[0];
+          const finalMsg = stringMsg.substr(0, 1).toUpperCase + stringMsg.substr(1);
+          setErrors({ password: finalMsg });
+        } else if (msg.search('email-already-in-use') > 0) {
+          setErrors({ email: 'Email already in use' });
+        }
       });
   };
 
   return user ? (
     <Redirect to="/" />
   ) : (
-    <div>
-      <h1>Register</h1>
-      Email:
-      <br />
-      <input
-        type="text"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-      />
-      <br />
-      Password:
-      <br />
-      <input
-        type="password"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-      />
-      <br />
-      <button onClick={handleRegister}>Register</button>
+    <div className="bg-primary" style={{ height: '100vh' }}>
+      <TopNavigator />
+      <Container className="bg-primary">
+        <Image src={require('../../assets/images/undraw_Designer_re_5v95.svg').default} fluid />
+      </Container>
+      <div
+        className="top-rounded border bg-white w-100"
+        style={{ position: 'absolute', bottom: 0 }}>
+        <Container className="py-5">
+          <Form className="px-4" onSubmit={event => handleRegister(event)}>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Control
+                type="text"
+                onChange={e => setField('email', e.target.value)}
+                placeholder="Enter email"
+                className="rounded-pill"
+                autoComplete="off"
+                isInvalid={!!errors.email}
+              />
+              <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Control
+                type="password"
+                onChange={e => setField('password', e.target.value)}
+                placeholder="Password"
+                className="rounded-pill"
+                isInvalid={!!errors.password}
+              />
+              <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicRePassword">
+              <Form.Control
+                type="password"
+                onChange={e => setField('rePassword', e.target.value)}
+                placeholder="Retype Password"
+                className="rounded-pill"
+                isInvalid={!!errors.rePassword}
+              />
+              <Form.Control.Feedback type="invalid">{errors.rePassword}</Form.Control.Feedback>
+            </Form.Group>
+
+            <div className="d-grid gap-2 pt-4">
+              <Button variant="primary" className="rounded-pill" type="submit">
+                Submit
+              </Button>
+            </div>
+          </Form>
+        </Container>
+      </div>
     </div>
   );
 };
