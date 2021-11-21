@@ -28,9 +28,7 @@ function App() {
         try {
           UserApi.get({ uid: user.uid }).then(({ status, data }) => {
             if (status === 200)
-              return dispatch(
-                saveUser({ ...data, refreshToken: user.refreshToken })
-              );
+              return dispatch(saveUser({ ...data, refreshToken: user.refreshToken }));
             return dispatch(saveUser(undefined));
           });
         } catch (error) {
@@ -80,8 +78,7 @@ function App() {
                       .catch(error => {
                         console.log('error', error);
                       });
-                  }}
-                >
+                  }}>
                   Log out
                 </Link>
               </li>
