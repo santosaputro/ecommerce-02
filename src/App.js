@@ -11,9 +11,7 @@ import ProtectedRoute from './utils/ProtectedRoutes';
 
 import { initializeApp } from 'firebase/app';
 import { firebaseConfig } from './configs/firebaseConfig';
-import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { saveUser } from './redux/slice/authSlice';
 import UserApi from './api/users/services';
 
@@ -22,7 +20,6 @@ import './assets/styles/styles.scss';
 function App() {
   initializeApp(firebaseConfig);
   const auth = getAuth();
-  // const user = useSelector(state => state.auth.userInfo);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -44,67 +41,6 @@ function App() {
 
   return (
     <Router>
-      {/* <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          {!user ? (
-            <>
-              <li>
-                <Link to="/login">Login</Link>
-              </li>
-              <li>
-                <Link to="/register">Register</Link>
-              </li>{' '}
-            </>
-          ) : (
-            ''
-          )}
-
-          {user ? (
-            <>
-              <li>
-                <Link to="/protected">Protected page</Link>
-              </li>
-              <li>
-                <Link to="/reset">Reset password</Link>
-              </li>
-              <li>
-                <Link
-                  to="#"
-                  onClick={() => {
-                    signOut(auth)
-                      .then(res => {
-                        console.log('user signed out', res);
-                      })
-                      .catch(error => {
-                        console.log('error', error);
-                      });
-                  }}>
-                  Log out
-                </Link>
-              </li>
-            </>
-          ) : (
-            ''
-          )}
-        </ul>
-      </nav> */}
-
-      {/* <button
-        onClick={() =>
-          signOut(auth)
-            .then(res => {
-              console.log('user signed out', res);
-            })
-            .catch(error => {
-              console.log('error', error);
-            })
-        }>
-        sign out
-      </button> */}
-
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/register" component={Register} />
