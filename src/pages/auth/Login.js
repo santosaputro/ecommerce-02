@@ -8,8 +8,10 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from 'firebase/auth';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { saveUser as saveUserState } from '../../redux/slice/authSlice';
 import UserApi from '../../api/users/services';
-import { useSelector } from 'react-redux';
 
 import { Container, Form, Button, Image } from 'react-bootstrap';
 import TopNavigator from '../../components/top-navigator';
@@ -19,7 +21,10 @@ import FormValidation from '../../utils/form-validation';
 const Login = () => {
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
+
+  const dispatch = useDispatch();
   const user = useSelector(state => state.auth.userInfo);
+
   const history = useHistory();
   const urlRef = decodeURIComponent(window.location.search.replace('?referer=', ''));
 
@@ -70,26 +75,31 @@ const Login = () => {
       });
   };
 
-  const saveUser = async body => {
+  const saveUser = async user => {
+    const body = {
+      credential: { providerId: user.providerId, signInMethod: 'google.com' },
+      displayName: user.displayName,
+      email: user.email,
+      emailVerified: user.emailVerified,
+      phoneNumber: user.phoneNumber,
+      photoURL: user.photoURL,
+      providerId: user.providerId,
+      uid: user.uid,
+    };
     const res = await UserApi.add({ body });
-    if (res.status === 200) history.replace(urlRef !== '' ? urlRef : '/');
+
+    if (res.status === 200) {
+      dispatch(saveUserState({ ...body, refreshToken: user.refreshToken }));
+      history.replace(urlRef !== '' ? urlRef : '/');
+    }
   };
 
   const loginWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then(result => {
-        const { user } = result;
-
-        saveUser({
-          credential: { providerId: user.providerId, signInMethod: 'google.com' },
-          displayName: user.displayName,
-          email: user.email,
-          emailVerified: user.emailVerified,
-          phoneNumber: user.phoneNumber,
-          photoURL: user.photoURL,
-          providerId: user.providerId,
-          uid: user.uid,
-        });
+        UserApi.get({ uid: result.user.uid })
+          .then(() => history.replace(urlRef !== '' ? urlRef : '/'))
+          .catch(() => saveUser(result.user));
       })
       .catch(error => {
         const { code, message, email } = error;

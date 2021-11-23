@@ -27,7 +27,7 @@ const MainMenu = ({ toggle, onToggle }) => {
 
   const handleClick = () => {
     onToggle(!toggle);
-    const ref = `?referer=${encodeURIComponent(window.location.origin)}`;
+    const ref = `?referer=${encodeURIComponent(window.location.pathname)}`;
     if (!user) return history.push(`/login${ref}`);
     if (user) {
       signOut(auth)

@@ -9,15 +9,6 @@ const get = async props => {
     : props?.uid
     ? `/user/byuid/${props.uid}`
     : '';
-  // const { type, id, uid } = props;
-  // const url =
-  //   type === "all"
-  //     ? "/user/all"
-  //     : type === "id"
-  //     ? `user/byid/${id}`
-  //     : type === "uid"
-  //     ? `user/byid/${uid}`
-  //     : "";
   return await axios.get(BASE_URI + url);
 };
 
