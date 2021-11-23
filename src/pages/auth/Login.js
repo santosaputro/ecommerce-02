@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import { Redirect } from 'react-router';
 import { Link, useHistory } from 'react-router-dom';
 
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from 'firebase/auth';
+import UserApi from '../../api/users/services';
 import { useSelector } from 'react-redux';
 
 import { Container, Form, Button, Image } from 'react-bootstrap';
@@ -12,6 +18,7 @@ import FormValidation from '../../utils/form-validation';
 
 const Login = () => {
   const auth = getAuth();
+  const provider = new GoogleAuthProvider();
   const user = useSelector(state => state.auth.userInfo);
   const history = useHistory();
 
@@ -59,6 +66,34 @@ const Login = () => {
           setErrors({ email: ' ', password: 'Wrong email or password!' });
         else if (msg.search('too-many-requests'))
           setErrors({ email: ' ', password: 'Too many requests, please try later' });
+      });
+  };
+
+  const saveUser = async body => {
+    const res = await UserApi.add({ body });
+    if (res.status === 200) history.replace('/');
+  };
+
+  const loginWithGoogle = () => {
+    signInWithPopup(auth, provider)
+      .then(result => {
+        const { user } = result;
+
+        saveUser({
+          credential: { providerId: user.providerId, signInMethod: 'google.com' },
+          displayName: user.displayName,
+          email: user.email,
+          emailVerified: user.emailVerified,
+          phoneNumber: user.phoneNumber,
+          photoURL: user.photoURL,
+          providerId: user.providerId,
+          uid: user.uid,
+        });
+      })
+      .catch(error => {
+        const { code, message, email } = error;
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        console.log({ code, message, email, credential });
       });
   };
 
@@ -116,13 +151,13 @@ const Login = () => {
               variant="outline-primary"
               className="rounded-pill"
               type="button"
-              // onClick={() => loginWithGoogle()}
+              onClick={() => loginWithGoogle()}
             >
               SignIn with google
             </Button>
-            <Button variant="outline-primary" className="rounded-pill" type="buttom">
+            {/* <Button variant="outline-primary" className="rounded-pill" type="buttom">
               SignIn with facebook
-            </Button>
+            </Button> */}
           </div>
         </Container>
       </div>

@@ -63,10 +63,7 @@ const Register = () => {
       .then(userCredential => {
         const { user } = userCredential;
         saveUser({
-          credential: {
-            providerId: user.providerId,
-            signInMethod: 'email',
-          },
+          credential: { providerId: user.providerId, signInMethod: 'email' },
           displayName: email.split('@')[0],
           email,
           emailVerified: false,
