@@ -3,10 +3,10 @@
   grid-column-gap: 7px;
   column-gap: 7px;
   width: 100%;
+  padding: 0.5rem !important;
 }
 
 .item-card {
-  padding: 0.5rem 0.5rem 2rem 0.5rem;
   cursor: pointer;
   color: $black;
   border-radius: 0.25rem;
@@ -23,8 +23,11 @@
   }
 
   .item-content {
+    padding: 0.5rem 0.5rem 2rem 0.5rem;
+
     .content-title {
       padding-top: 0.2rem;
+      color: $gray-700;
     }
 
     .content-price {

@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import BottomNavbar from '../themes/bottom-navbar';
 import TopNavbar from '../themes/top-navbar';
-// import Advertisement from '../components/advertisement';
-// import Banner from '../components/banner';
-// import Content from '../components/content';
+import Advertisement from '../components/advertisement';
+import Banner from '../components/banner';
+import HorizontalList from '../components/horizontal-list';
+import ItemCard from '../components/item-card';
 
 const Home = () => {
   const contentRef = useRef(null);
@@ -19,10 +20,14 @@ const Home = () => {
         <TopNavbar />
       </div>
       <div style={{ marginTop: `${height}px` }}>
-        {/* <Banner />
-        <Content height={height} />
+        <Banner />
+        <HorizontalList
+          height={height}
+          children={Array(11).fill(<div className="btn btn-success px-4">Success</div>)}
+        />
+        <div className="item-column">{Array(6).fill(<ItemCard />)}</div>
         <Advertisement />
-        <Content height={height} /> */}
+        <div className="item-column">{Array(14).fill(<ItemCard />)}</div>
       </div>
       <BottomNavbar />
     </>
