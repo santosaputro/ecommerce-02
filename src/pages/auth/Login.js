@@ -26,9 +26,9 @@ const Login = () => {
   const findFormErrors = () => {
     const { email, password } = form;
     const newErrors = {};
-    if (!email || email === '') newErrors.email = 'Cannot be blank';
-    else if (!FormValidation.email(email)) newErrors.email = 'Invalid email';
-    if (!password || password === '') newErrors.password = 'Cannot be blank';
+    if (!email || email === '') newErrors.email = 'Cannot be blank!';
+    else if (!FormValidation.email(email)) newErrors.email = 'Invalid email!';
+    if (!password || password === '') newErrors.password = 'Cannot be blank!';
 
     return newErrors;
   };
@@ -72,7 +72,8 @@ const Login = () => {
       </Container>
       <div
         className="top-rounded border bg-white w-100"
-        style={{ position: 'absolute', bottom: 0 }}>
+        style={{ position: 'absolute', bottom: 0 }}
+      >
         <Container className="py-5">
           <Form className="px-4" onSubmit={e => handleLogin(e)}>
             <Form.Group className="mb-3" controlId="formBasicEmail">

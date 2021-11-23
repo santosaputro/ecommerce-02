@@ -28,12 +28,12 @@ const Register = () => {
     const newErrors = {};
     // email errors
     if (!email || email === '') newErrors.email = 'Cannot be blank!';
-    else if (!FormValidation.email(email)) newErrors.email = 'Invalid email';
+    else if (!FormValidation.email(email)) newErrors.email = 'Invalid email!';
     // password errors
     if (!password || password === '') newErrors.password = 'Cannot be blank!';
     // rePassword errors
     if (!rePassword || rePassword === '') newErrors.rePassword = 'Cannot be blank!';
-    else if (rePassword !== password) newErrors.rePassword = "Password doesn't match";
+    else if (rePassword !== password) newErrors.rePassword = "Password doesn't match!";
 
     return newErrors;
   };
@@ -83,7 +83,7 @@ const Register = () => {
           const finalMsg = stringMsg.substr(0, 1).toUpperCase + stringMsg.substr(1);
           setErrors({ password: finalMsg });
         } else if (msg.search('email-already-in-use') > 0) {
-          setErrors({ email: 'Email already in use' });
+          setErrors({ email: 'Email already in use!' });
         }
       });
   };
