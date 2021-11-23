@@ -8,6 +8,7 @@ import UserApi from '../../api/users/services';
 
 import { Container, Form, Button, Image } from 'react-bootstrap';
 import TopNavigator from '../../components/top-navigator';
+import FormValidation from '../../utils/form-validation';
 
 const Register = () => {
   const auth = getAuth();
@@ -22,18 +23,12 @@ const Register = () => {
     if (!!errors[field]) setErrors({ ...errors, [field]: null });
   };
 
-  const validateEmail = email => {
-    const re =
-      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email);
-  };
-
   const findFormErrors = () => {
     const { email, password, rePassword } = form;
     const newErrors = {};
     // email errors
     if (!email || email === '') newErrors.email = 'Cannot be blank!';
-    else if (!validateEmail(email)) newErrors.email = 'Invalid email';
+    else if (!FormValidation.email(email)) newErrors.email = 'Invalid email';
     // password errors
     if (!password || password === '') newErrors.password = 'Cannot be blank!';
     // rePassword errors
@@ -103,7 +98,8 @@ const Register = () => {
       </Container>
       <div
         className="top-rounded border bg-white w-100"
-        style={{ position: 'absolute', bottom: 0 }}>
+        style={{ position: 'absolute', bottom: 0 }}
+      >
         <Container className="py-5">
           <Form className="px-4" onSubmit={event => handleRegister(event)}>
             <Form.Group className="mb-3" controlId="formBasicEmail">

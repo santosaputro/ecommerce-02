@@ -7,12 +7,10 @@ const Reset = () => {
 
   const handleReset = () => {
     sendPasswordResetEmail(auth, email)
-      .then(res => {
-        console.log('success', res);
-      })
+      .then(res => console.log('success', res))
       .catch(error => {
         const { code, message } = error;
-        console.log('An error has occured: ', code, message);
+        console.log('An error has occured: ', { code, message });
       });
   };
   return (
@@ -20,11 +18,7 @@ const Reset = () => {
       <h1>Reset password</h1>
       Email:
       <br />
-      <input
-        type="text"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-      />
+      <input type="text" value={email} onChange={e => setEmail(e.target.value)} />
       <br />
       <button onClick={handleReset}>Reset password</button>
     </div>
