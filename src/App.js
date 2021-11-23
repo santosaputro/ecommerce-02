@@ -2,10 +2,12 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
+import Home from './pages/public/home';
+import ItemDetail from './pages/public/item-detail';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Reset from './pages/auth/Reset';
-import Home from './pages/Home';
+
 import Secret from './pages/protected/Secret';
 import ProtectedRoute from './utils/ProtectedRoutes';
 
@@ -43,10 +45,13 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/" component={Home} />
+        <Route exact path="/item/:id" component={ItemDetail} />
+
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
-        <ProtectedRoute exact path="/protected" component={Secret} />
         <ProtectedRoute exact path="/reset" component={Reset} />
+
+        <ProtectedRoute exact path="/protected" component={Secret} />
       </Switch>
     </Router>
   );
