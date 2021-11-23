@@ -21,6 +21,7 @@ const Login = () => {
   const provider = new GoogleAuthProvider();
   const user = useSelector(state => state.auth.userInfo);
   const history = useHistory();
+  const urlRef = decodeURIComponent(window.location.search.replace('?referer=', ''));
 
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
@@ -57,7 +58,7 @@ const Login = () => {
     const { email, password } = form;
     signInWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
-        if (userCredential) history.replace('/');
+        if (userCredential) history.replace(urlRef !== '' ? urlRef : '/');
       })
       .catch(error => {
         const { message: msg } = error;
@@ -71,7 +72,7 @@ const Login = () => {
 
   const saveUser = async body => {
     const res = await UserApi.add({ body });
-    if (res.status === 200) history.replace('/');
+    if (res.status === 200) history.replace(urlRef !== '' ? urlRef : '/');
   };
 
   const loginWithGoogle = () => {
